@@ -28,6 +28,20 @@
         android:selectAllOnFocus="true"
         android:singleLine="true"
         android:title="Sleep time"
-        android:summary="Sets new sllep time"
+        android:summary="Sets new sleep time"
         android:key="sleeptime" />
+
+    <CheckBoxPreference
+        android:key="d"
+        android:defaultValue="true"
+        android:title="Allow 8 directions"/>
+
+    <ListPreference
+        android:key="language"
+        android:title="Style for the font"
+        android:summary="Sets the style for the font"
+        android:defaultValue="1"
+        android:entries="@array/languages"
+        android:entryValues="@array/languages"
+        android:dialogTitle="Choose a language" />
 </PreferenceScreen>

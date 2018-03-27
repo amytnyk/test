@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -37,6 +38,8 @@ public class MyView extends View {
     public boolean s;
     List<Pair<Integer, Integer>> toys;
     List<Pair<Integer, Integer>> moves;
+    List<Pair<Integer, Integer>> d_moves;
+    List<Pair<Integer, Integer>> wd_moves;
     public int turns;
     public int sleeptime;
     public Thread thread;
@@ -53,7 +56,9 @@ public class MyView extends View {
     public boolean show;
     public int g = 0;
     public int last_index;
-
+    public boolean d;
+    public int language;
+    public boolean stopped;
 
     public int[] colors = {
             Color.BLUE, Color.rgb(0, 0, 200), Color.rgb(0, 0, 150), Color.rgb(0, 0, 100), Color.rgb(0, 100, 150), Color.rgb(100, 0, 200)
@@ -89,20 +94,30 @@ public class MyView extends View {
     }
 
     public void init() {
-        moves = new ArrayList<>();
+        wd_moves = new ArrayList<>();
         step = Step.None;
-        moves.add(Pair.create(-1, -1));
-        moves.add(Pair.create(0, -1));
-        moves.add(Pair.create(1, -1));
-        moves.add(Pair.create(-1, 0));
-        moves.add(Pair.create(1, 0));
-        moves.add(Pair.create(-1, 1));
-        moves.add(Pair.create(0, 1));
-        moves.add(Pair.create(1, 1));
+        wd_moves.add(Pair.create(-1, -1));
+        wd_moves.add(Pair.create(0, -1));
+        wd_moves.add(Pair.create(1, -1));
+        wd_moves.add(Pair.create(-1, 0));
+        wd_moves.add(Pair.create(1, 0));
+        wd_moves.add(Pair.create(-1, 1));
+        wd_moves.add(Pair.create(0, 1));
+        wd_moves.add(Pair.create(1, 1));
+        d_moves = new ArrayList<>();
+        d_moves.add(Pair.create(0, -1));
+        d_moves.add(Pair.create(-1, 0));
+        d_moves.add(Pair.create(1, 0));
+        d_moves.add(Pair.create(0, 1));
         toys = new ArrayList<>();
         for (int i = 0; i < toys_count; i++) {
             toys.add(Pair.create(0, 0));
         }
+
+        if (d)
+            moves = wd_moves;
+        else
+            moves = d_moves;
     }
 
     public void loadSettings() {
@@ -116,12 +131,23 @@ public class MyView extends View {
         sleeptime = Integer.parseInt(p_sleeptime);
         String p_map = prefs.getString("map", "3");
         size = Integer.parseInt(p_map);
+        d = prefs.getBoolean("d", true);
+        String v = prefs.getString("language", "English");
+        if (v == "English")
+            language = 0;
+    }
+
+    public void cont() {
+        stopped = false;
     }
 
     public void touch(MotionEvent event) {
         if (ok_rect.contains((int) event.getX(), (int) event.getY())) {
             if (step == Step.Playing) {
-                stop();
+                if (stopped)
+                    cont();
+                else
+                    stop();
                 return;
             }
         }
@@ -183,6 +209,7 @@ public class MyView extends View {
         step = Step.Playing;
         green.clear();
         red.clear();
+        stopped = false;
         logic =  new Logic(toys, moves, size);
         thread = new Thread(new Runnable() {
             @Override
@@ -203,7 +230,7 @@ public class MyView extends View {
                         }
                         last_index = index;
                         int ti = logic.makeTurn(index);
-                        logic.playSound(ti, index, getContext());
+                        logic.playSound(ti, d, language, index, getContext());
                         toys.set(index, Pair.create(toys.get(index).first + moves.get(ti).first, toys.get(index).second + moves.get(ti).second));
                         //invalidate();
                         postInvalidate();
@@ -259,7 +286,7 @@ public class MyView extends View {
 
                 canvas.drawText(show ? "hide" : "show", start_rect.centerX(), start_rect.centerY(), text_paint);
 
-                canvas.drawText("stop", ok_rect.centerX(), ok_rect.centerY(), text_paint);
+                canvas.drawText(stopped ? "continue" : "stop", ok_rect.centerX(), ok_rect.centerY(), text_paint);
                 break;
             case End2:
                 // Draw OK button

@@ -19,14 +19,28 @@ public class Logic {
     public List<Pair<Integer, Integer>> moves;
     public MediaPlayer mp;
     public int size;
-    public int[] sounds = {
+    public int[][] sounds = { {
             R.raw.up_left, R.raw.up, R.raw.up_right,
             R.raw.left, R.raw.right,
-            R.raw.down_left, R.raw.down, R.raw.down_right
+            R.raw.down_left, R.raw.down, R.raw.down_right}, {
+            R.raw.up_left_ua, R.raw.up_ua, R.raw.up_right_ua,
+            R.raw.left_ua, R.raw.right_ua,
+            R.raw.down_left_ua, R.raw.down_ua, R.raw.down_right_ua}, {
+            R.raw.up_left_ru, R.raw.up_ru, R.raw.up_right_ru,
+            R.raw.left_ru, R.raw.right_ru,
+            R.raw.down_left_ru, R.raw.down_ru, R.raw.down_right_ru},
     };
 
-    public int[] nsounds = {
-        R.raw.one, R.raw.two, R.raw.three, R.raw.four, R.raw.five, R.raw.six
+    public int[][] dsounds = { {
+            R.raw.up, R.raw.left, R.raw.right, R.raw.down}, {
+            R.raw.up_ua, R.raw.left_ua, R.raw.right_ua, R.raw.down_ua}, {
+            R.raw.up_ru, R.raw.left_ru, R.raw.right_ru, R.raw.down_ru}
+    };
+
+    public int[][] nsounds = {
+            { R.raw.one, R.raw.two, R.raw.three, R.raw.four, R.raw.five, R.raw.six },
+            { R.raw.one_ua, R.raw.two_ua, R.raw.three_ua, R.raw.four_ua, R.raw.five_ua, R.raw.six_ua },
+            { R.raw.one_ru , R.raw.two_ru, R.raw.three_ru, R.raw.four_ru, R.raw.five_ru, R.raw.six_ru },
     };
 
 
@@ -43,7 +57,7 @@ public class Logic {
         int index;
         do {
             Random r = new Random();
-            index = Math.abs(r.nextInt() % 8);
+            index = Math.abs(r.nextInt() % moves.size());
             if (pos_x + moves.get(index).first >= 0 && pos_x + moves.get(index).first < size && pos_y + moves.get(index).second >= 0 && pos_y + moves.get(index).second < size) {
                 done = false;
             }
@@ -66,8 +80,8 @@ public class Logic {
         mp.start();
     }
 
-    public void playSound(final int ti, int n, Context context) {
-        mp = MediaPlayer.create(context, nsounds[n]);
+    public void playSound(final int ti, boolean d, int language, int n, Context context) {
+        mp = MediaPlayer.create(context, nsounds[language][n]);
         try {
             mp.prepare();
         } catch (Exception e) {
@@ -79,7 +93,10 @@ public class Logic {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        mp = MediaPlayer.create(context, sounds[ti]);
+        if (d)
+            mp = MediaPlayer.create(context, sounds[language][ti]);
+        else
+            mp = MediaPlayer.create(context, dsounds[language][ti]);
         try {
             mp.prepare();
         } catch (Exception e) {
@@ -89,35 +106,27 @@ public class Logic {
 
         if (ti == 0) {
             Log.d("TEST", "UP-LEFT");
-            //Toast.makeText(, "UP-LEFT", Toast.LENGTH_SHORT).show();
         }
         if (ti == 1) {
             Log.d("TEST", "UP");
-            //Toast.makeText(MainActivity.this, "UP", Toast.LENGTH_SHORT).show();
         }
         if (ti == 2) {
             Log.d("TEST", "UP-RIGHT");
-            //Toast.makeText(MainActivity.this, "UP-RIGHT", Toast.LENGTH_SHORT).show();
         }
         if (ti == 3) {
             Log.d("TEST", "LEFT");
-            // Toast.makeText(MainActivity.this, "LEFT", Toast.LENGTH_SHORT).show();
         }
         if (ti == 4) {
             Log.d("TEST", "RIGHT");
-            //Toast.makeText(MainActivity.this, "RIGHT", Toast.LENGTH_SHORT).show();
         }
         if (ti == 5) {
             Log.d("TEST", "DOWN_LEFT");
-            //Toast.makeText(MainActivity.this, "DOWN_LEFT", Toast.LENGTH_SHORT).show();
         }
         if (ti == 6) {
             Log.d("TEST", "DOWN");
-            //Toast.makeText(MainActivity.this, "DOWN", Toast.LENGTH_SHORT).show();
         }
         if (ti == 7) {
             Log.d("TEST", "DOWN_RIGHT");
-            // Toast.makeText(MainActivity.this, "DOWN_RIGHT", Toast.LENGTH_SHORT).show();
         }
     }
 
