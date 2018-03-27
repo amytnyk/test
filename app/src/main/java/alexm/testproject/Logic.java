@@ -43,6 +43,10 @@ public class Logic {
             { R.raw.one_ru , R.raw.two_ru, R.raw.three_ru, R.raw.four_ru, R.raw.five_ru, R.raw.six_ru },
     };
 
+    public int[] all = {
+            R.raw.all, R.raw.all_ua, R.raw.all_ru
+    };
+
 
     public Logic(List<Pair<Integer, Integer>> toys, List<Pair<Integer, Integer>> moves, int size) {
         this.toys = toys;
@@ -65,13 +69,13 @@ public class Logic {
         return index;
     }
 
-    public void all(Context context) {
+    public void all(Context context, int language) {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        mp = MediaPlayer.create(context, R.raw.all);
+        mp = MediaPlayer.create(context, all[language]);
         try {
             mp.prepare();
         } catch (Exception e) {

@@ -133,8 +133,23 @@ public class MyView extends View {
         size = Integer.parseInt(p_map);
         d = prefs.getBoolean("d", true);
         String v = prefs.getString("language", "English");
+        switch (v) {
+            case "English":
+                language = 0;
+                break;
+            case "Ukrainian":
+                language = 1;
+                break;
+            case "Russian":
+                language = 2;
+                break;
+        }
         if (v == "English")
             language = 0;
+        if (v == "Ukrainian")
+            language = 1;
+        if (v == "Russian")
+            language = 2;
     }
 
     public void cont() {
@@ -198,8 +213,7 @@ public class MyView extends View {
     }
 
     public void stop() {
-        step = Step.None;
-        thread.interrupt();
+        stopped = true;
     }
 
     public void start() {
@@ -216,7 +230,7 @@ public class MyView extends View {
             public void run() {
                 Looper.prepare();
                 for (int i = 0; i < turns; i++) {
-                    if (!thread.isInterrupted()) {
+                    if (!stopped) {
                         Random r = new Random();
                         int index = Math.abs(r.nextInt() % toys.size());
                         if (index == last_index)
@@ -241,10 +255,10 @@ public class MyView extends View {
                         }
                     }
                     else {
-                        break;
+                        i--;
                     }
                 }
-                logic.all(getContext());
+                logic.all(getContext(), language);
                 step = Step.End;
                 postInvalidate();
             }
