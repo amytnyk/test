@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <EditTextPreference
+        android:defaultValue="10"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="Turns count"
+        android:summary="Sets new turns count"
+        android:key="turns" />
+    <EditTextPreference
+        android:defaultValue="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="Sets new toys count"
+        android:title="Toys count"
+        android:key="toys" />
+    <EditTextPreference
+        android:defaultValue="3"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="Sets new map size"
+        android:title="Map size"
+        android:key="map" />
+
+    <EditTextPreference
+        android:defaultValue="2000"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="Sleep time"
+        android:summary="Sets new sllep time"
+        android:key="sleeptime" />
+</PreferenceScreen>
