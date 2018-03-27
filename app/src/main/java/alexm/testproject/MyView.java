@@ -150,6 +150,8 @@ public class MyView extends View {
             language = 1;
         if (v == "Russian")
             language = 2;
+        if (field_size * size > width)
+            field_size = width / size - 5;
     }
 
     public void cont() {
