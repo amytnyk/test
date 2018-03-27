@@ -78,7 +78,7 @@ public class MyView extends View {
         start_paint.setColor(Color.LTGRAY);
         start_rect = new Rect(width / 2 - width / 3 / 2, height / 12 * 8, width / 2 + width / 3 / 2, height / 12 * 10);
         ok_rect = new Rect(width / 2 - width / 3 / 2, height / 12 * 10, width / 2 + width / 3 / 2, height);
-        settings_rect = new Rect(0, height / 12 * 11, width / 3, height);
+        settings_rect = new Rect(0, height / 12 * 11, width / 4, height);
         text_paint = new Paint();
         text_paint.setColor(Color.GREEN);
         text_paint.setTextSize(50);
@@ -214,6 +214,7 @@ public class MyView extends View {
 
     public void stop() {
         stopped = true;
+        postInvalidate();
     }
 
     public void start() {
@@ -279,12 +280,12 @@ public class MyView extends View {
         }
         // Draw settings button
         canvas.drawRect(settings_rect, start_paint);
-        canvas.drawText("Settings", settings_rect.centerX(), settings_rect.centerY(), text_paint);
+        canvas.drawText((language == 0) ? "Settings" : (language == 1) ? "Налаштування" : "Настройки", settings_rect.centerX(), settings_rect.centerY(), text_paint);
         switch (step) {
             case None:
                 // Draw Start button
                 canvas.drawRect(start_rect, ok_paint);
-                canvas.drawText("Start", start_rect.centerX(), start_rect.centerY(), text_paint);
+                canvas.drawText((language == 0) ? "Start" : (language == 1) ? "Старт" : "Пуск", start_rect.centerX(), start_rect.centerY(), text_paint);
                 break;
             case Playing:
                 if (show) {
@@ -298,7 +299,7 @@ public class MyView extends View {
                 // Draw stop button
                 canvas.drawRect(ok_rect, ok_paint);
 
-                canvas.drawText(show ? "hide" : "show", start_rect.centerX(), start_rect.centerY(), text_paint);
+                canvas.drawText(show ? ((language == 0) ? "hide" : (language == 1) ? "Скрити" : "Скрить") : ((language == 0) ? "show" : (language == 1) ? "Показати" : "Показать"), start_rect.centerX(), start_rect.centerY(), text_paint);
 
                 canvas.drawText(stopped ? "continue" : "stop", ok_rect.centerX(), ok_rect.centerY(), text_paint);
                 break;

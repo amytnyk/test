@@ -85,6 +85,9 @@ public class Logic {
     }
 
     public void playSound(final int ti, boolean d, int language, int n, Context context) {
+        if (mp != null)
+            mp.release();
+        mp = null;
         mp = MediaPlayer.create(context, nsounds[language][n]);
         try {
             mp.prepare();
@@ -93,14 +96,17 @@ public class Logic {
         }
         mp.start();
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        mp.release();
+        mp = null;
         if (d)
             mp = MediaPlayer.create(context, sounds[language][ti]);
-        else
+        else {
             mp = MediaPlayer.create(context, dsounds[language][ti]);
+        }
         try {
             mp.prepare();
         } catch (Exception e) {
