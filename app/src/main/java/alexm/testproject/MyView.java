@@ -76,11 +76,11 @@ public class MyView extends View {
         ok_paint.setColor(Color.LTGRAY);
         start_paint = new Paint(Color.GRAY);
         start_paint.setColor(Color.LTGRAY);
-        start_rect = new Rect(width / 2 - width / 3 / 2, height / 12 * 8, width / 2 + width / 3 / 2, height / 12 * 10);
-        ok_rect = new Rect(width / 2 - width / 3 / 2, height / 12 * 10, width / 2 + width / 3 / 2, height);
-        settings_rect = new Rect(0, height / 12 * 11, width / 4, height);
+        start_rect = new Rect(width / 2 - width / 3 / 2, height / 12 * 8, width / 2 + width / 3 / 2, height / 12 * 9);
+        ok_rect = new Rect(width / 2 - width / 3 / 2, height / 12 * 9, width / 2 + width / 3 / 2, height / 12 * 10);
+        settings_rect = new Rect(0, height / 12 * 11, width / 2, height);
         text_paint = new Paint();
-        text_paint.setColor(Color.GREEN);
+        text_paint.setColor(Color.rgb(0, 200, 0));
         text_paint.setTextSize(50);
         text_paint.setTextAlign(Paint.Align.CENTER);
         green = new ArrayList<>();
@@ -299,9 +299,9 @@ public class MyView extends View {
                 // Draw stop button
                 canvas.drawRect(ok_rect, ok_paint);
 
-                canvas.drawText(show ? ((language == 0) ? "hide" : (language == 1) ? "Скрити" : "Скрить") : ((language == 0) ? "show" : (language == 1) ? "Показати" : "Показать"), start_rect.centerX(), start_rect.centerY(), text_paint);
+                canvas.drawText(show ? ((language == 0) ? "hide" : (language == 1) ? "Скрити" : "Скрыть") : ((language == 0) ? "show" : (language == 1) ? "Показати" : "Показать"), start_rect.centerX(), start_rect.centerY(), text_paint);
 
-                canvas.drawText(stopped ? "continue" : "stop", ok_rect.centerX(), ok_rect.centerY(), text_paint);
+                canvas.drawText(stopped ? ((language == 0) ? "continue" : (language == 1) ? "Продовжити" : "Продолжить") : ((language == 0) ? "stop" : (language == 1) ? "Стоп" : "Стоп"), ok_rect.centerX(), ok_rect.centerY(), text_paint);
                 break;
             case End2:
                 // Draw OK button
