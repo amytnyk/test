@@ -8,7 +8,8 @@ import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    public MyView mv;
+    public Game game;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,22 +17,31 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        mv = new MyView(getApplicationContext());
-        setContentView(mv);
+        game = new Game(getApplicationContext());
 
-        mv.setOnTouchListener(new View.OnTouchListener() {
+        game.mv = new MyView(getApplicationContext());
+        game.mv.step = Step.None;
+        setContentView(game.mv);
+
+        game.mv.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                mv.touch(motionEvent);
+               game.mv.touch(motionEvent);
                 return false;
             }
         });
 
+        game.set();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mv.loadSettings();
+        game.loadSettings();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();game.pause();
     }
 }
